@@ -27,7 +27,8 @@
                     </div>
 
                     <div class="col-2">
-                        <input id="minusPdvPostotak" type="text" class="form-control " value="17" style="font-size: 1.3em;">
+                        <input id="minusPdvPostotak" type="text" class="form-control " value="17"
+                            style="font-size: 1.3em;">
                     </div>
 
                     <div class="col-1">
@@ -51,7 +52,7 @@
 
                                     </tr>
                                 </thead>
-                                <tbody id="tBody">
+                                <tbody>
                                     <tr>
 
                                         <td class="tdFont" id="tdBezPdv"></td>
@@ -70,24 +71,26 @@
                 <div class="row">
                     <h3 class="text-center text-white">Dodaj PDV</h3>
                     <div class="col-3">
-                        <input id="inpDodajpdvVrijednost" class="form-control " type="text" style="font-size: 1.3em;" placeholder="Iznos">
+                        <input id="inpDodajpdvVrijednost" class="form-control " type="text" style="font-size: 1.3em;"
+                            placeholder="Iznos">
                     </div>
                     <div class="col-1">
                         <h3 class="text-white">+</h3>
                     </div>
 
                     <div class="col-2">
-                        <input id="plusPdvPostotak"  type="text" class="form-control " value="17" style="font-size: 1.3em;">
+                        <input id="plusPdvPostotak" type="text" class="form-control " value="17"
+                            style="font-size: 1.3em;">
                     </div>
 
                     <div class="col-1">
                         <h3 class="text-white mt-1">%</h3>
                     </div>
 
-<div class="col">
-    <button class="btn btn-success" id="btnDodajpdv">Izračunaj</button>
+                    <div class="col">
+                        <button class="btn btn-success" id="btnDodajpdv">Izračunaj</button>
 
-</div>
+                    </div>
 
                 </div>
                 <br>
@@ -103,7 +106,7 @@
 
                                     </tr>
                                 </thead>
-                                <tbody id="tBody">
+                                <tbody>
                                     <tr>
 
                                         <td class="tdFont" id="tdSaPdv"></td>
@@ -115,26 +118,77 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
-
         </div>
-
-
     </div>
 
+<script>
+    const inpOduzmipdvVrijednost = document.getElementById(
+            'inpOduzmipdvVrijednost'
+        );
+        const inpDodajpdvVrijednost = document.getElementById('inpDodajpdvVrijednost');
+        const btnOduzmipdv = document.getElementById('btnOduzmipdv');
+        const btnDodajpdv = document.getElementById('btnDodajpdv');
+        const minusPdvPostotak = document.getElementById('minusPdvPostotak');
+        const plusPdvPostotak = document.getElementById('plusPdvPostotak');
+        const tdBezPdv = document.getElementById('tdBezPdv');
+        const tdIznosBezpdv = document.getElementById('tdIznosBezpdv');
+        const tdSaPdv = document.getElementById('tdSaPdv');
+        const tdIznosSaPdv = document.getElementById('tdIznosSaPdv');
+
+        function oduzmiPdv() {
+            const vrijednost = parseFloat(inpOduzmipdvVrijednost.value);
+            const procenat = parseFloat(minusPdvPostotak.value);
+
+            if (isNaN(vrijednost) || isNaN(procenat)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Pogrešan unos!!',
+                    text: 'Molim unesite brojčane vrijednosti!',
+                });
+                inpOduzmipdvVrijednost.value = '';
+                minusPdvPostotak.value = '17';
+                return;
+            }
+
+            const pdv = vrijednost / (1 + procenat / 100);
+            tdBezPdv.textContent = pdv.toFixed(2);
+            tdIznosBezpdv.textContent = (vrijednost - pdv).toFixed(2);
+        }
+
+        btnOduzmipdv.addEventListener('click', oduzmiPdv);
+
+        function dodajPdv() {
+
+            const vrijednost = parseFloat(inpDodajpdvVrijednost.value);
+            const procenat = parseFloat(plusPdvPostotak.value);
+            const pdv = vrijednost * (procenat / 100);
+            tdIznosSaPdv.textContent = pdv.toFixed(2);
+            if (isNaN(vrijednost) || isNaN(procenat)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Pogrešan unos!!',
+                    text: 'Molim unesite brojčane vrijednosti!',
+                });
+
+                inpDodajpdvVrijednost.value = '';
+                plusPdvPostotak.value = '17';
+                return;
+            }
+
+            tdSaPdv.textContent = +inpDodajpdvVrijednost.value + +pdv.toFixed(2);
+        }
+
+        btnDodajpdv.addEventListener('click', dodajPdv);
+
+</script>
 
 
 
-
-
-
-    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 </body>
-
 </html>
